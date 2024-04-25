@@ -29,6 +29,8 @@ public partial class HalmaController : GridContainer
 
 	private const String PLAYER_WHITE = "w";
 	private const String PLAYER_BLACK = "b";
+	private const String POTENTIAL_MOVE = "x";
+	private const String EMPTY_TILE = "";
 	private (int, int) NO_PRESS = (-1, -1);
 
 	private (int, int) firstPressCoords;
@@ -107,7 +109,6 @@ public partial class HalmaController : GridContainer
 	private void GridToGame() {
 		for (int row = 0; row < GRID_SIZE; row++) {
 			for (int col = 0; col < GRID_SIZE; col++) {
-				// GD.Print(row*16 + col);
 				GetChild<Button>(row*16 + col).Icon = Icon(row, col);
 			}
 		}
@@ -145,9 +146,9 @@ public partial class HalmaController : GridContainer
 	}
 	private String InitialOccupation(int row, int col) {
 		if (IsBase(row, col)) {
-			return row < 5 ? "w" : "b";
+			return row < 5 ? PLAYER_WHITE : PLAYER_BLACK;
 		} else {
-			return ""; 
+			return EMPTY_TILE; 
 		}
 	}
 
@@ -177,22 +178,84 @@ public partial class HalmaController : GridContainer
 		// GD.Print("Current coords: " + firstPressCoords);
 		// GD.Print("Current player:" + currentPlayer);
 
-		if (firstPressCoords == NO_PRESS) {
+		if (secondPressCoords == NO_PRESS) {
 			if (gameGrid[row, col] == currentPlayer) {
+				ClearPotentialMoves();
 				firstPressCoords = (row, col);
+				GeneratePotentialMoves(row, col);
+			} else if (gameGrid[row, col] == POTENTIAL_MOVE) {
+				gameGrid[firstPressCoords.Item1 ,firstPressCoords.Item2] = EMPTY_TILE;
+				gameGrid[row, col] = currentPlayer;
+				secondPressCoords = (row, col);
+				currentPlayer = NotCurrentPlayer();
+				ClearPotentialMoves();
 			}
-		} else {
-			if (gameGrid[row, col] == currentPlayer) {
-				firstPressCoords = (row, col);
-			}
+		} else if (gameGrid[row, col] == currentPlayer) {
+			firstPressCoords = (row, col);
+			secondPressCoords = NO_PRESS;
+			GeneratePotentialMoves(row, col);
 		}
+
 
 		// GD.Print("First press: " + firstPressCoords);
 		GridToGame();
 	}
 
-	private void GeneratePotentialMoves(int row, int col, String player) {
+	private String NotCurrentPlayer() {
+		return currentPlayer == PLAYER_WHITE ? PLAYER_BLACK : PLAYER_WHITE;
+	}
 
+	private void GeneratePotentialMoves(int row, int col) {
+		GeneratePotentialMovesInner(row, col, currentPlayer, gameGrid, false);
+	}
+
+	private void ClearPotentialMoves() {
+		for (int row = 0; row < GRID_SIZE; row++) {
+			for (int col = 0; col < GRID_SIZE; col++) {
+				if (gameGrid[row, col].Equals(POTENTIAL_MOVE)) {
+					gameGrid[row, col] = EMPTY_TILE;
+				}
+			}
+		}
+	}
+
+	private void GeneratePotentialMovesInner(int row, int col, String player, String[,] game, bool afterJump) {
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				int checkRow = row + i;
+				int checkCol = col + j;
+
+				if (MoveOutOfBounds(checkRow, checkCol)) {
+					continue;
+				}
+
+				if (game[checkRow, checkCol].Equals(POTENTIAL_MOVE)) {
+					continue;
+				} else if (game[checkRow, checkCol].Equals(EMPTY_TILE)) {
+					if (!afterJump) {
+						game[checkRow, checkCol] = POTENTIAL_MOVE;
+					}
+				} else {
+					checkRow += i;
+					checkCol += j;
+
+					if (MoveOutOfBounds(checkRow, checkCol)) {
+						continue;
+					}
+
+					if (game[checkRow, checkCol].Equals(EMPTY_TILE)) {
+						game[checkRow, checkCol] = POTENTIAL_MOVE;
+						GeneratePotentialMovesInner(checkRow, checkCol, player, game, true);
+					} else {
+						continue;
+					}
+				}
+			}
+		}
+	}
+
+	private bool MoveOutOfBounds(int checkRow, int checkCol) {
+		return checkRow < 0 || checkCol < 0 || checkRow >= GRID_SIZE || checkCol >= GRID_SIZE;
 	}
 	
 	private (int, int) ButtonToCoords(String buttonName) {
