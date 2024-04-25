@@ -1,0 +1,50 @@
+[gd_scene load_steps=18 format=3 uid="uid://b8x2u8ywae8v3"]
+
+[ext_resource type="Script" path="res://Scripts/HalmaController.cs" id="1_2dxga"]
+[ext_resource type="Texture2D" uid="uid://dja3a4vsonvke" path="res://TileSprites/_0.aseprite" id="2_07faw"]
+[ext_resource type="Texture2D" uid="uid://c0hr5fjgvy28b" path="res://TileSprites/_1.aseprite" id="3_1c3qf"]
+[ext_resource type="Texture2D" uid="uid://cy7d3vhe3yyfm" path="res://TileSprites/x_0.aseprite" id="4_pnh6i"]
+[ext_resource type="Texture2D" uid="uid://da3drr5ykdtrk" path="res://TileSprites/x_base.aseprite" id="4_rekej"]
+[ext_resource type="Texture2D" uid="uid://brqc7c7wwics3" path="res://TileSprites/x_1.aseprite" id="5_1j0ru"]
+[ext_resource type="Texture2D" uid="uid://dktl86tfn05k5" path="res://TileSprites/x_highlight.aseprite" id="5_1rbgl"]
+[ext_resource type="Texture2D" uid="uid://h4f75hp62pn8" path="res://TileSprites/black_0.aseprite" id="6_rcplk"]
+[ext_resource type="Texture2D" uid="uid://2n2u5wyrbv5x" path="res://TileSprites/black_1.aseprite" id="7_2squv"]
+[ext_resource type="Texture2D" uid="uid://kahcobo8ordo" path="res://TileSprites/_base.aseprite" id="8_i2bxm"]
+[ext_resource type="Texture2D" uid="uid://p86xloofdqcp" path="res://TileSprites/white_0.aseprite" id="8_qla7y"]
+[ext_resource type="Texture2D" uid="uid://bi1414pbp3x4f" path="res://TileSprites/white_1.aseprite" id="9_01ji4"]
+[ext_resource type="Texture2D" uid="uid://ciwo2ambyod3g" path="res://TileSprites/_highlight.aseprite" id="9_360l4"]
+[ext_resource type="Texture2D" uid="uid://d15g6c7oqpwhr" path="res://TileSprites/black_base.aseprite" id="12_xbgav"]
+[ext_resource type="Texture2D" uid="uid://cq8ajjju2u1tx" path="res://TileSprites/black_highlight.aseprite" id="13_xdtcu"]
+[ext_resource type="Texture2D" uid="uid://c8ixpyia27bot" path="res://TileSprites/white_base.aseprite" id="16_t51ac"]
+[ext_resource type="Texture2D" uid="uid://cl2dukh1kc234" path="res://TileSprites/white_highlight.aseprite" id="17_i2whs"]
+
+[node name="Halma" type="Node2D"]
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 16
+script = ExtResource("1_2dxga")
+_0 = ExtResource("2_07faw")
+_1 = ExtResource("3_1c3qf")
+_base = ExtResource("8_i2bxm")
+_highlight = ExtResource("9_360l4")
+X_0 = ExtResource("4_pnh6i")
+X_1 = ExtResource("5_1j0ru")
+X_base = ExtResource("4_rekej")
+X_highlight = ExtResource("5_1rbgl")
+Black_0 = ExtResource("6_rcplk")
+Black_1 = ExtResource("7_2squv")
+Black_base = ExtResource("12_xbgav")
+Black_highlight = ExtResource("13_xdtcu")
+White_0 = ExtResource("8_qla7y")
+White_1 = ExtResource("9_01ji4")
+White_base = ExtResource("16_t51ac")
+White_highlight = ExtResource("17_i2whs")
